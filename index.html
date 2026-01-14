@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Querés ser mi novia?</title>
+  <style>
+    body {
+      background: #ffccd5;
+      margin: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+      color: #861657;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      max-width: 90%;
+      width: 500px;
+    }
+
+    h1 {
+      margin: 0 0 20px 0;
+      font-size: 2.4rem;
+    }
+
+    p {
+      margin: 0 0 25px 0;
+      font-size: 1rem;
+    }
+
+    .buttons {
+      position: relative;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #si {
+      background: #ff4d6d;
+      color: white;
+      transition: all 0.3s ease;
+      transform: scale(1);
+    }
+
+    #no {
+      background: #f1f1f1;
+      color: #333;
+      position: relative;
+    }
+
+    /* Overlay romántico */
+    .romantic-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(134, 22, 87, 0.95);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .romantic-overlay.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .romantic-message {
+      background: white;
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      max-width: 600px;
+      animation: scaleIn 0.8s ease-out 0.3s both;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .romantic-message h2 {
+      font-size: 2.5rem;
+      color: #ff4d6d;
+      margin: 0 0 20px 0;
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% {
+        transform: scale(1);
+      }
+      10%, 30% {
+        transform: scale(1.1);
+      }
+      20%, 40% {
+        transform: scale(1);
+      }
+    }
+
+    .romantic-message .name {
+      font-size: 2rem;
+      color: #861657;
+      font-weight: bold;
+      margin: 20px 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .container .name {
+      font-size: 2rem;
+      color: #861657;
+      font-weight: bold;
+      margin: 0 0 20px 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .romantic-message .main-text {
+      font-size: 1.3rem;
+      color: #333;
+      line-height: 1.8;
+      margin: 25px 0;
+    }
+
+    .romantic-message .hearts-container {
+      font-size: 3rem;
+      margin: 20px 0;
+      animation: floatHearts 2s ease-in-out infinite;
+    }
+
+    @keyframes floatHearts {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .celebration-heart {
+      position: fixed;
+      font-size: 40px;
+      animation: celebrate 3s ease-out forwards;
+      pointer-events: none;
+      z-index: 1001;
+    }
+
+    @keyframes celebrate {
+      0% {
+        transform: translate(0, 0) scale(0) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Corazones flotando */
+    .heart {
+      position: absolute;
+      animation-name: float;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+    }
+
+    /* Rosal decorativo en los márgenes superiores */
+    .rosal-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      z-index: 5;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .vine {
+      position: absolute;
+      top: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #2d5016, #3d7317, #2d5016);
+      opacity: 0.8;
+      border-radius: 3px;
+    }
+
+    .vine-left {
+      left: 0;
+      animation: grow-vine 2s ease-out forwards;
+      transform-origin: left;
+    }
+
+    .vine-right {
+      right: 0;
+      animation: grow-vine-right 2s ease-out forwards;
+      transform-origin: right;
+    }
+
+    @keyframes grow-vine {
+      from { width: 0; }
+      to { width: 40%; }
+    }
+
+    @keyframes grow-vine-right {
+      from { width: 0; }
+      to { width: 40%; }
+    }
+
+    .rose-svg {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      animation: bloom 1.5s ease-out forwards, sway 3s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes bloom {
+      from {
+        transform: scale(0) rotate(-20deg);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes sway {
+      0%, 100% {
+        transform: rotate(-5deg);
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+    }
+
+    .leaf-svg {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      opacity: 0.8;
+      animation: leaf-sway 4s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes leaf-sway {
+      0%, 100% {
+        transform: rotate(-3deg);
+      }
+      50% {
+        transform: rotate(3deg);
+      }
+    }
+
+    /* Responsivo para tablets */
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 25px;
+        max-width: 85%;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 10px 18px;
+      }
+
+      .rosal-container {
+        height: 160px;
+      }
+
+      .rose-svg {
+        width: 50px;
+        height: 50px;
+      }
+
+      .leaf-svg {
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+    /* Responsivo para móviles */
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px 20px;
+        max-width: 90%;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        margin: 0 0 15px 0;
+      }
+
+      p {
+        font-size: 0.9rem;
+        margin: 0 0 20px 0;
+      }
+
+      button {
+        font-size: 15px;
+        padding: 10px 15px;
+        margin: 8px;
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .rosal-container {
+        height: 130px;
+      }
+
+      .rose-svg {
+        width: 45px;
+        height: 45px;
+      }
+
+      .leaf-svg {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    /* Móviles muy pequeños */
+    @media (max-width: 360px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      p {
+        font-size: 0.85rem;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+
+      .rosal-container {
+        height: 110px;
+      }
+
+      .rose-svg {
+        width: 40px;
+        height: 40px;
+      }
+
+      .leaf-svg {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Overlay romántico para cuando diga "Sí" -->
+  <div class="romantic-overlay" id="romanticOverlay">
+    <div class="romantic-message">
+      <h2>💕 ¡SÍ! 💕</h2>
+      <div class="name">Victoria Nahir Duartez</div>
+      <div class="main-text">
+        ¡Sos la persona más especial para mí!<br>
+        Prometo darte todo mi amor,<br>
+        muchos abrazos, besos y mimitos.<br>
+        ¡Te Amo! 💘
+      </div>
+      <div class="hearts-container">💖 💗 💓 💕</div>
+    </div>
+  </div>
+
+  <!-- Rosal decorativo en la parte superior -->
+  <div class="rosal-container">
+    <!-- Enredaderas -->
+    <div class="vine vine-left"></div>
+    <div class="vine vine-right"></div>
+    
+    <!-- Lado izquierdo -->
+    <svg class="rose-svg" style="top: 15px; left: 10%;" viewBox="0 0 100 100">
+      <defs>
+        <radialGradient id="roseGrad1">
+          <stop offset="0%" style="stop-color:#ff1744;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#c51162;stop-opacity:1" />
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="rose-svg" style="top: 45px; left: 18%; animation-delay: 0.2s;" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="rose-svg" style="top: 25px; left: 25%; animation-delay: 0.4s;" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="rose-svg" style="top: 60px; left: 32%; animation-delay: 0.3s;" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="leaf-svg" style="top: 35px; left: 15%; animation-delay: 0.5s;" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="50" rx="20" ry="35" fill="#3d7317" transform="rotate(25 50 50)"/>
+      <line x1="50" y1="20" x2="50" y2="80" stroke="#2d5016" stroke-width="2"/>
+    </svg>
+    
+    <svg class="leaf-svg" style="top: 55px; left: 22%; animation-delay: 0.7s;" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="50" rx="20" ry="35" fill="#3d7317" transform="rotate(-15 50 50)"/>
+      <line x1="50" y1="20" x2="50" y2="80" stroke="#2d5016" stroke-width="2"/>
+    </svg>
+    
+    <svg class="leaf-svg" style="top: 40px; left: 28%; animation-delay: 0.6s;" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="50" rx="20" ry="35" fill="#3d7317" transform="rotate(10 50 50)"/>
+      <line x1="50" y1="20" x2="50" y2="80" stroke="#2d5016" stroke-width="2"/>
+    </svg>
+    
+    <!-- Lado derecho -->
+    <svg class="rose-svg" style="top: 20px; right: 12%; animation-delay: 0.1s;" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="rose-svg" style="top: 50px; right: 20%; animation-delay: 0.3s;" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="rose-svg" style="top: 30px; right: 27%; animation-delay: 0.5s;" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="rose-svg" style="top: 65px; right: 34%; animation-delay: 0.4s;" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="8" fill="url(#roseGrad1)"/>
+      <circle cx="42" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="58" cy="45" r="10" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="52" r="11" fill="url(#roseGrad1)"/>
+      <circle cx="50" cy="48" r="7" fill="#ff4081"/>
+      <line x1="50" y1="60" x2="50" y2="85" stroke="#2d5016" stroke-width="3"/>
+    </svg>
+    
+    <svg class="leaf-svg" style="top: 40px; right: 16%; animation-delay: 0.6s;" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="50" rx="20" ry="35" fill="#3d7317" transform="rotate(-25 50 50)"/>
+      <line x1="50" y1="20" x2="50" y2="80" stroke="#2d5016" stroke-width="2"/>
+    </svg>
+    
+    <svg class="leaf-svg" style="top: 60px; right: 24%; animation-delay: 0.8s;" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="50" rx="20" ry="35" fill="#3d7317" transform="rotate(15 50 50)"/>
+      <line x1="50" y1="20" x2="50" y2="80" stroke="#2d5016" stroke-width="2"/>
+    </svg>
+    
+    <svg class="leaf-svg" style="top: 45px; right: 30%; animation-delay: 0.7s;" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="50" rx="20" ry="35" fill="#3d7317" transform="rotate(-10 50 50)"/>
+      <line x1="50" y1="20" x2="50" y2="80" stroke="#2d5016" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="name">Victoria Nahir Duartez</div>
+    <h1>¿Querés ser mi novia?</h1>
+
+    <div class="buttons">
+      <button id="si">Sí</button>
+      <button id="no">No</button>
+    </div>
+  </div>
+
+  <script>
+    // Acción botón "Sí" - Mostrar overlay romántico
+    document.getElementById('si').addEventListener('click', () => {
+      const overlay = document.getElementById('romanticOverlay');
+      overlay.classList.add('show');
+      
+      // Crear explosión de corazones celebrando
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          createCelebrationHeart();
+        }, i * 100);
+      }
+    });
+
+    // Función para crear corazones de celebración
+    function createCelebrationHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('celebration-heart');
+      heart.innerHTML = ['💖', '💗', '💓', '💕', '💘'][Math.floor(Math.random() * 5)];
+      
+      // Posición inicial aleatoria cerca del centro
+      const startX = window.innerWidth / 2 + (Math.random() - 0.5) * 100;
+      const startY = window.innerHeight / 2 + (Math.random() - 0.5) * 100;
+      
+      heart.style.left = startX + 'px';
+      heart.style.top = startY + 'px';
+      
+      // Dirección de movimiento aleatoria
+      const tx = (Math.random() - 0.5) * 800;
+      const ty = (Math.random() - 0.5) * 800;
+      heart.style.setProperty('--tx', tx + 'px');
+      heart.style.setProperty('--ty', ty + 'px');
+      
+      document.body.appendChild(heart);
+      
+      setTimeout(() => {
+        heart.remove();
+      }, 3000);
+    }
+
+    // Botón "No" que se escapa y hace crecer el "Sí"
+    const noBtn = document.getElementById('no');
+    const siBtn = document.getElementById('si');
+    const buttonsWrapper = document.querySelector('.buttons');
+    let escapeCount = 0;
+
+    noBtn.addEventListener('mouseover', () => {
+      const maxX = 150;
+      const maxY = 80;
+      const randomX = (Math.random() * maxX) - maxX / 2;
+      const randomY = (Math.random() * maxY) - maxY / 2;
+      noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      
+      // Hacer crecer el botón "Sí" gradualmente
+      escapeCount++;
+      const newScale = 1 + (escapeCount * 0.15); // Crece 15% cada vez
+      siBtn.style.transform = `scale(${newScale})`;
+      
+      // También aumentar el tamaño de la fuente
+      const newFontSize = 18 + (escapeCount * 2);
+      siBtn.style.fontSize = newFontSize + 'px';
+    });
+
+    // Corazones flotando en el fondo
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerHTML = '❤';
+
+      const size = 10 + Math.random() * 35; // tamaño aleatorio
+      const duration = 4 + Math.random() * 5; // duración aleatoria
+      const left = Math.random() * 100; // posición horizontal
+
+      heart.style.left = left + 'vw';
+      heart.style.fontSize = size + 'px';
+      heart.style.animationDuration = duration + 's';
+
+      document.body.appendChild(heart);
+
+      // eliminar el corazón cuando termine la animación
+      setTimeout(() => {
+        heart.remove();
+      }, duration * 1000);
+    }
+
+    // generar MUCHOS más corazones continuamente
+    setInterval(createHeart, 10); // Aumentado a cada 100ms para lluvia abundante de corazones
+  </script>
+</body>
+</html>
